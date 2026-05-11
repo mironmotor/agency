@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<body id="b"><script>
+const img = new Image();
+img.onload = () => {
+  const c = document.createElement('canvas');
+  c.width = img.naturalWidth; c.height = img.naturalHeight;
+  const ctx = c.getContext('2d');
+  ctx.drawImage(img, 0, 0);
+  const d = ctx.getImageData(0, 0, c.width, c.height);
+  for (let i = 0; i < d.data.length; i += 4) {
+    const bright = (d.data[i] + d.data[i+1] + d.data[i+2]) / 3;
+    if (bright < 140) {
+      d.data[i] = 255; d.data[i+1] = 255; d.data[i+2] = 255; d.data[i+3] = 255;
+    } else {
+      d.data[i+3] = 0;
+    }
+  }
+  ctx.putImageData(d, 0, 0);
+  const b64 = c.toDataURL('image/png');
+  document.getElementById('b').innerHTML = '<div style="word-break:break-all;font-size:10px;font-family:monospace">' + b64 + '</div>';
+};
+img.onerror = () => document.getElementById('b').textContent = 'ERROR';
+img.src = '/root/.openclaw/workspace/agency/logo.jpg';
+</script></body></html>
