@@ -104,24 +104,15 @@
     nav.scrolled { border-bottom-color: var(--border); }
 
     .logo {
-      font-size: 1.5rem;
-      font-weight: 900;
-      letter-spacing: 0.15em;
-      color: var(--white);
+      display: inline-block;
+      height: 40px;
       text-decoration: none;
-      position: relative;
     }
-    .logo span {
-      color: var(--accent);
-    }
-    .logo::after {
-      content: 'AGENCY';
-      font-size: 0.55rem;
-      font-weight: 500;
-      letter-spacing: 0.3em;
-      color: var(--text-dim);
+    .logo img {
+      height: 100%;
+      width: auto;
       display: block;
-      margin-top: -4px;
+      filter: brightness(0) invert(1);
     }
 
     .nav-links { display: flex; gap: 32px; align-items: center; }
@@ -665,7 +656,7 @@
 
 <!-- NAV -->
 <nav id="navbar">
-  <a href="#" class="logo">LTF<span>.</span></a>
+  <a href="#" class="logo"><img src="logo.jpg" alt="LTF Agency"></a>
   <div class="nav-links" id="navLinks">
     <a href="#services">Услуги</a>
     <a href="#cases">Кейсы</a>
@@ -1139,7 +1130,7 @@
   <div class="container">
     <div class="footer-inner">
       <div>
-        <div class="footer-logo">LTF.</div>
+        <img src="logo.jpg" alt="LTF Agency" style="height:32px;width:auto;filter:brightness(0) invert(1);display:block;">
         <div class="footer-copy">© 2026 LTF Agency</div>
       </div>
       <div class="footer-links">
