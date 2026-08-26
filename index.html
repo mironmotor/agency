@@ -731,6 +731,90 @@
 }
 #lightbox.open { display: flex; }
 #lightbox img { max-width: 100%; max-height: 100%; border-radius: 10px; }
+
+/* Портрет и справка об основателе. */
+.founder-intro {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 40px;
+  align-items: center;
+  margin-bottom: 48px;
+  padding: 32px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+.founder-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  border: 1px solid var(--border-light);
+}
+.founder-role {
+  font-size: 12px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: #4d8dff;
+  margin-bottom: 14px;
+}
+.founder-lead { font-size: 17px; line-height: 1.6; margin: 0 0 20px; }
+.founder-path { list-style: none; padding: 0; margin: 0 0 20px; display: grid; gap: 9px; }
+.founder-path li {
+  color: var(--text-dim);
+  font-size: 15px;
+  padding-left: 16px;
+  position: relative;
+}
+.founder-path li::before {
+  content: "";
+  position: absolute; left: 0; top: 9px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #2f6dff;
+}
+.founder-path b { color: var(--text); margin-right: 6px; }
+.founder-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.founder-meta span {
+  font-size: 13px;
+  color: var(--text-dim);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 14px;
+}
+
+/* Переход в ядро. */
+.core-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  margin-top: 32px;
+  padding: 30px 32px;
+  border-radius: 20px;
+  border: 1px solid #23407a;
+  background: linear-gradient(120deg, rgba(20,32,64,.9), rgba(13,16,28,.9));
+  text-decoration: none;
+  color: inherit;
+  transition: border-color .2s ease, transform .2s ease;
+}
+.core-cta:hover { border-color: #3d7bff; transform: translateY(-3px); }
+.core-cta-tag {
+  font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+  color: #4d8dff; margin-bottom: 10px;
+}
+.core-cta h3 { margin: 0 0 10px; font-size: 22px; }
+.core-cta p { margin: 0; color: var(--text-dim); font-size: 15px; line-height: 1.6; max-width: 640px; }
+.core-cta-action {
+  display: flex; align-items: center; gap: 10px;
+  white-space: nowrap; font-weight: 600; color: #6ea3ff;
+}
+
+@media (max-width: 860px) {
+  .founder-intro { grid-template-columns: 1fr; gap: 24px; padding: 22px; text-align: left; }
+  .founder-photo { max-width: 240px; }
+  .core-cta { flex-direction: column; align-items: flex-start; gap: 18px; padding: 24px; }
+}
 </style>
 </head>
 <body>
@@ -1046,6 +1130,31 @@
     <h2>Мирон Бочаров</h2>
     <p class="section-desc">Маркетолог-продюсер. Десять лет — от таргета до запусков и AI-систем</p>
 
+
+    <!-- Портрет + короткая справка. Лицо в блоке «кто ведёт проекты» работает
+         сильнее любого текста: человек покупает у человека, а не у агентства. -->
+    <div class="founder-intro reveal">
+      <div class="founder-photo">
+        <img src="miron.jpg" alt="Мирон Бочаров" width="639" height="856" loading="lazy">
+      </div>
+      <div class="founder-bio">
+        <div class="founder-role">Internet Marketer · Founder · AGI Builder</div>
+        <p class="founder-lead">Маркетолог и основатель, который строит системы, а не презентации.
+        Перформанс, органика, аналитика и автоматизация — в одном человеке.</p>
+        <ul class="founder-path">
+          <li><b>2017</b> — вошёл в интернет-маркетинг, руками начал водить трафик</li>
+          <li><b>2020</b> — вырастил LTF Agency, вышел на поток клиентских проектов</li>
+          <li><b>2023</b> — ушёл в AI: продукт, системы, автоматизация</li>
+          <li><b>2026</b> — строю AGI-продукты: GAME, MAX17, Astro</li>
+        </ul>
+        <div class="founder-meta">
+          <span>Бали · работаю с Россией, СНГ, США и Европой</span>
+          <span>Английский C1</span>
+          <span>«Синергия» — менеджмент и маркетинг</span>
+        </div>
+      </div>
+    </div>
+
     <div class="founder-grid reveal">
       <div class="founder-card">
         <h3>Перформанс</h3>
@@ -1072,6 +1181,24 @@
         ложится в клиентские проекты: воронки, которые сами обрабатывают заявки.</p>
       </div>
     </div>
+
+
+    <!-- Вход в AI-ядро. Живой продукт убеждает сильнее строчки «делаем AI». -->
+    <a class="core-cta reveal" href="https://mir.care/" target="_blank" rel="noopener">
+      <div class="core-cta-body">
+        <div class="core-cta-tag">Собственный продукт</div>
+        <h3>MAX17 — когнитивное ядро</h3>
+        <p>Не пересказываю про нейросети, а строю их. Живая память, автономный поиск,
+        агенты, которые работают без человека. Ядро запущено и доступно — можно зайти
+        и поговорить с ним прямо сейчас.</p>
+      </div>
+      <div class="core-cta-action">
+        <span>Открыть ядро</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </a>
 
     <div class="founder-note reveal">
       <p><b>Английский C1.</b> Московский финансово-промышленный университет «Синергия» —
