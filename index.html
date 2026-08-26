@@ -694,11 +694,11 @@
   width: 100%;
   height: 100%;
   z-index: 0;
-  opacity: .55;
+  opacity: 1;
   pointer-events: none;
 }
 .hero-inner { position: relative; z-index: 1; }
-@media (max-width: 760px) { .hero-fractal { opacity: .35; } }
+@media (max-width: 760px) { .hero-fractal { opacity: .5; } }
 </style>
 </head>
 <body>
@@ -1372,7 +1372,7 @@ const TG_FALLBACK = 'https://clck.ru/3VSTdL';
 
     // Вершины: широкий треугольник, слегка смещённый вправо, чтобы текст
     // первого экрана ложился на разрежённую часть, а не на плотную.
-    const cx = w * 0.62, cy = h * 0.52, r = Math.min(w, h) * 0.46;
+    const cx = w * 0.66, cy = h * 0.5, r = Math.min(w, h) * 0.56;
     const vertices = [0, 1, 2].map((i) => {
       const a = -Math.PI / 2 + (i * 2 * Math.PI) / 3;
       return [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
@@ -1380,7 +1380,7 @@ const TG_FALLBACK = 'https://clck.ru/3VSTdL';
 
     points = [];
     let x = cx, y = cy;
-    const total = w < 700 ? 26000 : 60000;
+    const total = w < 700 ? 30000 : 78000;
     for (let i = 0; i < total; i++) {
       const [vx, vy] = vertices[(Math.random() * 3) | 0];
       x = (x + vx) / 2;
@@ -1391,16 +1391,22 @@ const TG_FALLBACK = 'https://clck.ru/3VSTdL';
 
   function paint(phase) {
     ctx.clearRect(0, 0, w, h);
+    const halo = ctx.createRadialGradient(w * 0.62, h * 0.5, 0, w * 0.62, h * 0.5, Math.min(w, h) * 0.62);
+    halo.addColorStop(0, 'rgba(56, 132, 255, 0.16)');
+    halo.addColorStop(0.55, 'rgba(70, 90, 220, 0.06)');
+    halo.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = halo;
+    ctx.fillRect(0, 0, w, h);
     // Синий с уходом в фиолетовый акцент сайта: холодный, «взгляд вперёд».
     for (let i = 0; i < points.length; i += 2) {
       const px = points[i], py = points[i + 1];
       const t = (px / w + py / h) / 2;                 // положение задаёт оттенок
       const glow = calm ? 0 : Math.sin(phase + t * 6) * 0.5 + 0.5;
       const hue = 205 + t * 45;                        // 205° синий → 250° фиолетовый
-      const light = 52 + glow * 18;
-      const alpha = 0.10 + glow * 0.16;
+      const light = 58 + glow * 20;
+      const alpha = 0.34 + glow * 0.34;
       ctx.fillStyle = `hsla(${hue}, 88%, ${light}%, ${alpha})`;
-      ctx.fillRect(px, py, 1.15, 1.15);
+      ctx.fillRect(px, py, 1.4, 1.4);
     }
   }
 
