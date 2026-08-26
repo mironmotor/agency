@@ -627,7 +627,29 @@
       .stat { border-right: none; }
       .process { grid-template-columns: 1fr; }
     }
-  </style>
+  
+/* Основатель и автоматизация: две колонки на десктопе, одна на телефоне. */
+.founder-grid, .auto-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 32px;
+}
+.founder-card, .auto-card {
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.03);
+}
+.founder-card h3, .auto-card h3 { margin: 0 0 10px; font-size: 17px; }
+.founder-card p, .auto-card p { margin: 0; line-height: 1.65; opacity: .82; font-size: 14.5px; }
+.founder-card b, .auto-card b { color: #fff; opacity: 1; }
+.founder-note {
+  margin-top: 24px; padding: 18px 22px; border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.06); background: rgba(255,255,255,.02);
+}
+.founder-note p { margin: 0; font-size: 14px; opacity: .75; }
+</style>
 </head>
 <body>
 
@@ -637,6 +659,8 @@
   <div class="nav-links" id="navLinks">
     <a href="#services">Услуги</a>
     <a href="#cases">Кейсы</a>
+    <a href="#automation">Автоматизация</a>
+    <a href="#founder">О нас</a>
     <a href="#process">Процесс</a>
     <a href="#quiz">Квиз</a>
     <a href="https://t.me/mironmotor" class="nav-cta" target="_blank">Связаться</a>
@@ -662,20 +686,20 @@
 <!-- STATS -->
 <div class="stats">
   <div class="stat">
-    <div class="num">60M+ ₽</div>
-    <div class="label">Рекламного бюджета</div>
+    <div class="num">$7M+</div>
+    <div class="label">Выручки клиентам<br><span style="opacity:.6;font-size:.85em">более 600 млн ₽</span></div>
   </div>
   <div class="stat">
-    <div class="num">390M+ ₽</div>
-    <div class="label">Оборот клиентов</div>
+    <div class="num">$800K+</div>
+    <div class="label">Открученного бюджета<br><span style="opacity:.6;font-size:.85em">более 60 млн ₽</span></div>
   </div>
   <div class="stat">
-    <div class="num">50+</div>
-    <div class="label">Проектов</div>
+    <div class="num">500+</div>
+    <div class="label">Клиентов<br><span style="opacity:.6;font-size:.85em">в 60+ нишах</span></div>
   </div>
   <div class="stat">
-    <div class="num">7+</div>
-    <div class="label">Лет в маркетинге</div>
+    <div class="num">10</div>
+    <div class="label">Лет в маркетинге<br><span style="opacity:.6;font-size:.85em">с 2016 года</span></div>
   </div>
 </div>
 
@@ -762,7 +786,7 @@
       <div>
         <div class="section-tag">Кейсы</div>
         <h2>Результаты говорят сами</h2>
-        <p class="section-desc">Часть из 50+ реализованных проектов</p>
+        <p class="section-desc">Часть из 500+ реализованных проектов в 60+ нишах</p>
       </div>
     </div>
 
@@ -892,6 +916,77 @@
         </div>
       </div>
 
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section id="founder">
+  <div class="container">
+    <div class="section-tag">Кто ведёт проекты</div>
+    <h2>Мирон Бочаров</h2>
+    <p class="section-desc">Маркетолог-продюсер. Десять лет — от таргета до запусков и AI-систем</p>
+
+    <div class="founder-grid reveal">
+      <div class="founder-card">
+        <h3>Перформанс</h3>
+        <p>Вёл маркетинг сети из <b>6 тату-салонов с оборотом 140 млн ₽</b>. Яндекс Директ, VK,
+        Instagram, Facebook, TikTok — с командой таргетологов, дизайнеров и монтажёров.
+        Средний ROMI по проектам <b>300–700%</b>, на отдельных нишах — <b>1000%</b>.</p>
+      </div>
+      <div class="founder-card">
+        <h3>Продюсирование</h3>
+        <p>Онлайн-школы под ключ: холодные и тёплые запуски, автоворонки с креативными роликами.
+        <b>Оборот запусков — более 10 млн ₽.</b> Кейс: вложено 300 000 ₽ — запуск на
+        <b>3 400 000 ₽</b> через автоворонку на холодном трафике.</p>
+      </div>
+      <div class="founder-card">
+        <h3>Личные бренды</h3>
+        <p>Работа с блогерами-миллионниками. Один из проектов: аудитория выросла со <b>150 до 9 000</b>
+        человек, ролики набрали <b>более 10 млн просмотров</b>, блог принёс эксперту
+        <b>свыше 2 млн ₽</b>. Партнёрская кампания — <b>3,2 млн ₽</b> с 80 000 показов.</p>
+      </div>
+      <div class="founder-card">
+        <h3>AI и автоматизация</h3>
+        <p>Не пересказываю про нейросети — <b>строю их</b>. Собственное когнитивное ядро с живой
+        памятью, автономным поиском и агентами, которые работают без человека. Этот опыт
+        ложится в клиентские проекты: воронки, которые сами обрабатывают заявки.</p>
+      </div>
+    </div>
+
+    <div class="founder-note reveal">
+      <p><b>Английский C1.</b> Московский финансово-промышленный университет «Синергия» —
+      менеджмент и маркетинг. Работа с клиентами из России, СНГ, США и Европы.</p>
+    </div>
+  </div>
+</section>
+
+<!-- AUTOMATION -->
+<section id="automation">
+  <div class="container">
+    <div class="section-tag">Отдельное направление</div>
+    <h2>Автоматизация и AI-ассистенты</h2>
+    <p class="section-desc">Когда воронка не просто приводит заявку, а ведёт её до сделки сама</p>
+
+    <div class="auto-grid reveal">
+      <div class="auto-card">
+        <h3>Что делаем</h3>
+        <p>Чат-боты и автоворонки, которые квалифицируют лида, отвечают на возражения и
+        доводят до оплаты. AI-ассистент на вашей базе знаний — отвечает голосом бренда,
+        помнит контекст клиента, работает круглосуточно.</p>
+      </div>
+      <div class="auto-card">
+        <h3>Зачем это бизнесу</h3>
+        <p>Заявка, обработанная за минуту, конвертируется в разы лучше, чем через час.
+        Автоворонка на одном из проектов давала <b>1 000 000 ₽ выручки в месяц</b>,
+        а трафик за 100 000 ₽ окупался продажами на <b>560 000 ₽</b>.</p>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:32px">
+      <a class="btn" href="https://mironmotor.github.io/landing" target="_blank" rel="noopener">
+        Посмотреть направление автоматизации →
+      </a>
     </div>
   </div>
 </section>
