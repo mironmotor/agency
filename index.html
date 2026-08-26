@@ -698,7 +698,7 @@
   pointer-events: none;
 }
 .hero-inner { position: relative; z-index: 1; }
-@media (max-width: 760px) { .hero-fractal { opacity: .5; } }
+@media (max-width: 760px) { .hero-fractal { opacity: .34; } }
 </style>
 </head>
 <body>
@@ -1372,7 +1372,12 @@ const TG_FALLBACK = 'https://clck.ru/3VSTdL';
 
     // Вершины: широкий треугольник, слегка смещённый вправо, чтобы текст
     // первого экрана ложился на разрежённую часть, а не на плотную.
-    const cx = w * 0.66, cy = h * 0.5, r = Math.min(w, h) * 0.56;
+    // На узком экране текст занимает всю ширину — уводим фрактал вниз, под
+    // кнопки, иначе точки лезут под заголовок и мешают читать.
+    const narrow = w < 760;
+    const cx = narrow ? w * 0.5 : w * 0.68;
+    const cy = narrow ? h * 0.74 : h * 0.47;
+    const r = Math.min(w, h) * (narrow ? 0.4 : 0.48);
     const vertices = [0, 1, 2].map((i) => {
       const a = -Math.PI / 2 + (i * 2 * Math.PI) / 3;
       return [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
@@ -1402,7 +1407,7 @@ const TG_FALLBACK = 'https://clck.ru/3VSTdL';
       const px = points[i], py = points[i + 1];
       const t = (px / w + py / h) / 2;                 // положение задаёт оттенок
       const glow = calm ? 0 : Math.sin(phase + t * 6) * 0.5 + 0.5;
-      const hue = 205 + t * 45;                        // 205° синий → 250° фиолетовый
+      const hue = 200 + t * 32;                        // 200° синий → 232° индиго
       const light = 58 + glow * 20;
       const alpha = 0.34 + glow * 0.34;
       ctx.fillStyle = `hsla(${hue}, 88%, ${light}%, ${alpha})`;
