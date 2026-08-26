@@ -145,7 +145,8 @@
 
     /* ===== HERO ===== */
     .hero {
-      min-height: 100vh;
+      min-height: 100vh;      /* запасной вариант для старых браузеров */
+      min-height: 100dvh;     /* на телефоне высота меняется вместе с адресной строкой */
       display: flex;
       align-items: center;
       padding: 0 clamp(24px, 5vw, 64px);
@@ -634,6 +635,10 @@
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
   margin-top: 32px;
+}
+/* Четыре карточки в три колонки давали «3 + 1 сирота». Ровная сетка 2×2. */
+@media (min-width: 900px) {
+  .founder-grid { grid-template-columns: repeat(2, 1fr); gap: 22px; }
 }
 .founder-card, .auto-card {
   padding: 24px;
