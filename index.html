@@ -699,6 +699,38 @@
 }
 .hero-inner { position: relative; z-index: 1; }
 @media (max-width: 760px) { .hero-fractal { opacity: .34; } }
+
+/* Доказательства: скриншоты кабинетов. */
+.proof { margin-top: 80px; }
+.proof-head { text-align: center; margin-bottom: 32px; }
+.proof-head h3 { font-size: clamp(22px, 3vw, 32px); margin: 0 0 10px; letter-spacing: -.02em; }
+.proof-head p { color: var(--text-dim); font-size: 15px; margin: 0; }
+.proof-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+.proof-item {
+  margin: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: zoom-in;
+  transition: border-color .2s ease, transform .2s ease;
+}
+.proof-item:hover { border-color: #2f6dff; transform: translateY(-3px); }
+.proof-item img { display: block; width: 100%; height: auto; }
+.proof-item figcaption { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 4px; }
+.proof-item figcaption b { font-size: 15px; }
+.proof-item figcaption span { color: var(--text-dim); font-size: 13px; line-height: 1.5; }
+@media (max-width: 760px) { .proof-grid { grid-template-columns: 1fr; } .proof { margin-top: 56px; } }
+
+/* Просмотр скриншота во весь экран — иначе мелкие цифры в кабинете не прочесть. */
+#lightbox {
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(6, 8, 16, .94);
+  display: none; align-items: center; justify-content: center;
+  padding: 24px; cursor: zoom-out;
+}
+#lightbox.open { display: flex; }
+#lightbox img { max-width: 100%; max-height: 100%; border-radius: 10px; }
 </style>
 </head>
 <body>
@@ -976,6 +1008,33 @@
         </div>
       </div>
 
+    </div>
+
+    <!-- Скриншоты рекламных кабинетов. Цифры в подписях сняты с самих
+         скриншотов — итоговые строки кабинетов, ничего не округлено вверх. -->
+    <div class="proof reveal">
+      <div class="proof-head">
+        <h3>Кабинеты, а не слова</h3>
+        <p>Итоговые строки рекламных кабинетов по проектам. Нажми, чтобы рассмотреть цифры.</p>
+      </div>
+      <div class="proof-grid">
+        <figure class="proof-item">
+          <img src="cases/lingvamania.jpg" alt="Рекламный кабинет проекта Лингвамания" loading="lazy" width="1280" height="631">
+          <figcaption><b>Онлайн-школа языков</b><span>143 кампании · 11,3 млн ₽ откручено · 15,7 млн показов · 84 791 клик</span></figcaption>
+        </figure>
+        <figure class="proof-item">
+          <img src="cases/cabinet-90.jpg" alt="Рекламный кабинет: 90 кампаний" loading="lazy" width="1280" height="645">
+          <figcaption><b>Товарка и услуги</b><span>90 кампаний · 2,84 млн ₽ откручено · 18,6 млн показов · 151 118 кликов</span></figcaption>
+        </figure>
+        <figure class="proof-item">
+          <img src="cases/nailbar.jpg" alt="Рекламный кабинет бьюти-студии" loading="lazy" width="1280" height="725">
+          <figcaption><b>Бьюти-студии, сеть по Москве</b><span>194 кампании · 1,16 млн ₽ откручено · лид от 57 ₽ · 35 328 уникальных кликов</span></figcaption>
+        </figure>
+        <figure class="proof-item">
+          <img src="cases/cabinet-189.jpg" alt="Рекламный кабинет: 189 кампаний" loading="lazy" width="1280" height="585">
+          <figcaption><b>Квизы и трафик на вакансии</b><span>189 кампаний · 1,22 млн ₽ откручено · клик от 10,86 ₽ · 42 377 кликов</span></figcaption>
+        </figure>
+      </div>
     </div>
   </div>
 </section>
@@ -1442,7 +1501,31 @@ const TG_FALLBACK = 'https://clck.ru/3VSTdL';
     else if (!calm) raf = requestAnimationFrame(loop);
   });
 })();
+
+/* Открыть скриншот кабинета крупно. Отдельного окна не делаем — на телефоне
+   новая вкладка увела бы человека с лендинга. */
+(function proofZoom() {
+  const box = document.createElement('div');
+  box.id = 'lightbox';
+  const big = document.createElement('img');
+  box.appendChild(big);
+  document.body.appendChild(box);
+
+  document.querySelectorAll('.proof-item img').forEach((im) => {
+    im.addEventListener('click', () => {
+      big.src = im.src;
+      big.alt = im.alt;
+      box.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  const close = () => { box.classList.remove('open'); document.body.style.overflow = ''; };
+  box.addEventListener('click', close);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+})();
 </script>
+
 
 <noscript><div><img src="https://mc.yandex.ru/watch/111977007" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 
