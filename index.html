@@ -669,6 +669,22 @@
   .hero-promise { font-size: 14px; }
   .hero-promise span { font-size: 12.5px; }
 }
+
+/* Форма заявки в финале квиза. */
+.lead-form { margin-top: 18px; display: flex; flex-direction: column; gap: 10px; text-align: left; }
+.lead-form input {
+  width: 100%; padding: 13px 15px; border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.04);
+  color: #fff; font-size: 15px; font-family: inherit; outline: none;
+}
+.lead-form input:focus { border-color: var(--accent); }
+.lead-form input::placeholder { color: rgba(255,255,255,.35); }
+.lead-form input.invalid { border-color: #ff6b6b; }
+.lead-form button { width: 100%; }
+.lead-note { margin: 2px 0 0; font-size: 12.5px; color: rgba(255,255,255,.4); }
+.lead-status { margin: 6px 0 0; font-size: 13.5px; min-height: 18px; }
+.lead-status.ok { color: #4ade80; }
+.lead-status.err { color: #ff8b8b; }
 </style>
 </head>
 <body>
@@ -1105,7 +1121,20 @@
           <div class="icon">🎯</div>
           <h4 id="resTitle"></h4>
           <p id="resText"></p>
-          <a href="https://t.me/mironmotor" class="btn btn-primary" target="_blank">Получить консультацию</a>
+
+          <!-- Контакт забираем ЗДЕСЬ, на пике интереса. Ссылка в телеграм ловит
+               только тех, кто сам дойдёт до переписки, — остальной бюджет сгорает. -->
+          <form class="lead-form" id="leadForm" novalidate>
+            <input type="text" id="leadName" name="name" placeholder="Как вас зовут" autocomplete="name" required>
+            <input type="text" id="leadContact" name="contact" placeholder="Телефон или @телеграм" autocomplete="tel" required>
+            <button type="submit" class="btn btn-primary" id="leadSubmit">Получить стратегию на 2027</button>
+            <p class="lead-note">Ответим в течение дня. Без спама и звонков роботов.</p>
+            <p class="lead-status" id="leadStatus"></p>
+          </form>
+
+          <a href="https://t.me/mironmotor" class="btn btn-ghost" target="_blank" style="margin-top:10px">
+            Или написать в Telegram →
+          </a>
         </div>
       </div>
       <div class="quiz-footer" id="quizFooter">
@@ -1171,6 +1200,9 @@
       q.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('sel'));
       opt.classList.add('sel');
       answers[curQ] = opt.dataset.v;
+      // Ответы кладём наружу: их забирает форма заявки, чтобы разговор с
+      // клиентом начинался не с нуля, а с того, что он уже про себя рассказал.
+      window.quizAnswers = Object.entries(answers).map(([q, v]) => `Q${q}: ${v}`);
       document.getElementById('quizNext').disabled = false;
     });
   });
@@ -1215,7 +1247,86 @@
     document.getElementById('resText').textContent = text;
     document.getElementById('quizResult').classList.add('active');
   }
+
+/* ─────────── ЗАЯВКИ ───────────
+   Сайт статический (GitHub Pages), своего сервера нет — поэтому заявка уходит
+   в Google Apps Script, а он пишет строку в таблицу. Бесплатно, без лимитов и
+   без сервисов-посредников, которые однажды закроются.
+
+   ЧТО ПОДСТАВИТЬ: LEAD_ENDPOINT — адрес развёрнутого веб-приложения.
+   Пока он пустой, форма не молчит, а уводит человека в Telegram: потерять
+   заявку хуже, чем показать запасной путь. */
+const LEAD_ENDPOINT = '';   // ← сюда адрес Apps Script
+const TG_FALLBACK = 'https://t.me/mironmotor';
+
+(function initLeadForm() {
+  const form = document.getElementById('leadForm');
+  if (!form) return;
+  const status = document.getElementById('leadStatus');
+  const button = document.getElementById('leadSubmit');
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const name = document.getElementById('leadName');
+    const contact = document.getElementById('leadContact');
+    [name, contact].forEach((f) => f.classList.remove('invalid'));
+    if (!name.value.trim()) { name.classList.add('invalid'); name.focus(); return; }
+    if (contact.value.trim().length < 4) { contact.classList.add('invalid'); contact.focus(); return; }
+
+    button.disabled = true;
+    status.className = 'lead-status';
+    status.textContent = 'Отправляю…';
+
+    // Ответы квиза едут вместе с контактом: без них перезванивают вслепую.
+    const payload = {
+      name: name.value.trim(),
+      contact: contact.value.trim(),
+      answers: (window.quizAnswers || []).join(' | '),
+      result: (document.getElementById('resTitle') || {}).textContent || '',
+      page: location.href,
+      ref: document.referrer || '',
+      ts: new Date().toISOString(),
+    };
+
+    try {
+      if (!LEAD_ENDPOINT) throw new Error('endpoint not set');
+      await fetch(LEAD_ENDPOINT, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload),
+      });
+      status.className = 'lead-status ok';
+      status.textContent = 'Готово. Свяжемся с вами сегодня.';
+      form.reset();
+      if (typeof ym === 'function' && window.YM_ID) ym(window.YM_ID, 'reachGoal', 'lead');
+    } catch (error) {
+      status.className = 'lead-status err';
+      status.innerHTML = 'Не отправилось. <a href="' + TG_FALLBACK + '" target="_blank" style="color:inherit;text-decoration:underline">Напишите в Telegram</a> — отвечу лично.';
+    } finally {
+      button.disabled = false;
+    }
+  });
+})();
 </script>
+
+
+<!-- ЯНДЕКС.МЕТРИКА
+     Работает на GitHub Pages как на любом сайте: счётчик клиентский, сервер не нужен.
+     ЧТО ПОДСТАВИТЬ: номер счётчика вместо 00000000 — в двух местах ниже.
+     Цель «lead» засчитывается из формы заявки автоматически. -->
+<script>
+  window.YM_ID = 00000000;   // ← номер счётчика Яндекс.Метрики
+  (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+  m[i].l=1*new Date();
+  for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+  k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+  (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+  if (window.YM_ID) {
+    ym(window.YM_ID, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true });
+  }
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/00000000" style="position:absolute;left:-9999px" alt="" /></div></noscript>
 
 </body>
 </html>
