@@ -29,7 +29,7 @@
     "serviceType": ["Таргетированная реклама", "SMM", "Продюсирование", "Разработка сайтов", "Автоворонки"],
     "areaServed": "RU",
     "knowsLanguage": ["ru"],
-    "sameAs": ["https://www.threads.com/@mironmotor", "https://t.me/mironmotor"],
+    "sameAs": ["https://www.threads.com/@mironmotor", "https://clck.ru/3VSTdL"],
     "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "47" }
   }
   </script>
@@ -685,6 +685,20 @@
 .lead-status { margin: 6px 0 0; font-size: 13.5px; min-height: 18px; }
 .lead-status.ok { color: #4ade80; }
 .lead-status.err { color: #ff8b8b; }
+
+/* Фрактальный холст первого экрана. */
+.hero { position: relative; overflow: hidden; }
+.hero-fractal {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: .55;
+  pointer-events: none;
+}
+.hero-inner { position: relative; z-index: 1; }
+@media (max-width: 760px) { .hero-fractal { opacity: .35; } }
 </style>
 </head>
 <body>
@@ -699,7 +713,7 @@
     <a href="#founder">О нас</a>
     <a href="#process">Процесс</a>
     <a href="#quiz">Квиз</a>
-    <a href="https://t.me/mironmotor" class="nav-cta" target="_blank">Связаться</a>
+    <a href="https://clck.ru/3VSTdL" class="nav-cta" target="_blank">Связаться</a>
   </div>
   <button class="burger" id="burger" aria-label="Меню">
     <span></span><span></span><span></span>
@@ -708,6 +722,11 @@
 
 <!-- HERO -->
 <section class="hero">
+  <!-- Фрактальная графика вместо стоковых фото: рисуется кодом, весит ноль,
+       не устаревает и выглядит как то, чем агентство занимается — системы,
+       а не картинки. Треугольник Серпинского: одно правило, из которого
+       вырастает сложная структура. -->
+  <canvas id="fractal" class="hero-fractal" aria-hidden="true"></canvas>
   <div class="hero-inner">
     <div class="hero-tag">Digital-агентство</div>
     <h1>Приводим<br>клиентов.<br><span class="accent">Строим</span><br>бренды.</h1>
@@ -1132,7 +1151,7 @@
             <p class="lead-status" id="leadStatus"></p>
           </form>
 
-          <a href="https://t.me/mironmotor" class="btn btn-ghost" target="_blank" style="margin-top:10px">
+          <a href="https://clck.ru/3VSTdL" class="btn btn-ghost" target="_blank" style="margin-top:10px">
             Или написать в Telegram →
           </a>
         </div>
@@ -1149,7 +1168,7 @@
   <div class="container">
     <h2>Готовы расти?</h2>
     <p>Напишите — обсудим ваш проект</p>
-    <a href="https://t.me/mironmotor" class="btn btn-primary">Написать в Telegram →</a>
+    <a href="https://clck.ru/3VSTdL" class="btn btn-primary">Написать в Telegram →</a>
   </div>
 </section>
 
@@ -1164,7 +1183,7 @@
       <div class="footer-links">
         <a href="#services">Услуги</a>
         <a href="#cases">Кейсы</a>
-        <a href="https://t.me/mironmotor" target="_blank">Telegram</a>
+        <a href="https://clck.ru/3VSTdL" target="_blank">Telegram</a>
         <a href="https://www.threads.com/@mironmotor" target="_blank">Threads</a>
       </div>
     </div>
@@ -1257,7 +1276,9 @@
    Пока он пустой, форма не молчит, а уводит человека в Telegram: потерять
    заявку хуже, чем показать запасной путь. */
 const LEAD_ENDPOINT = '';   // ← сюда адрес Apps Script
-const TG_FALLBACK = 'https://t.me/mironmotor';
+// Короткая ссылка Яндекса вместо прямой t.me: не блокируется в РФ и
+// переходы по ней видны в Метрике.
+const TG_FALLBACK = 'https://clck.ru/3VSTdL';
 
 (function initLeadForm() {
   const form = document.getElementById('leadForm');
@@ -1311,22 +1332,108 @@ const TG_FALLBACK = 'https://t.me/mironmotor';
 </script>
 
 
-<!-- ЯНДЕКС.МЕТРИКА
-     Работает на GitHub Pages как на любом сайте: счётчик клиентский, сервер не нужен.
-     ЧТО ПОДСТАВИТЬ: номер счётчика вместо 00000000 — в двух местах ниже.
-     Цель «lead» засчитывается из формы заявки автоматически. -->
-<script>
-  window.YM_ID = 00000000;   // ← номер счётчика Яндекс.Метрики
-  (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-  m[i].l=1*new Date();
-  for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-  k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-  (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-  if (window.YM_ID) {
-    ym(window.YM_ID, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true });
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    window.YM_ID = 111977007;
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=111977007', 'ym');
+
+    ym(111977007, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+
+/* ─────────── ФРАКТАЛ ───────────
+   Треугольник Серпинского строится «игрой в хаос»: точка прыгает к случайной
+   вершине на половину расстояния — и из чистой случайности проступает строгая
+   структура. Ровно то, что агентство продаёт: порядок из шума.
+
+   Рисуем ОДИН раз в офскрин-буфер и потом только медленно ведём по нему свет.
+   Перерисовывать сто тысяч точек каждый кадр — значит греть телефон клиента
+   ради фона. */
+(function drawFractal() {
+  const canvas = document.getElementById('fractal');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d', { alpha: true });
+  if (!ctx) return;
+
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let w = 0, h = 0, points = [];
+
+  function build() {
+    const rect = canvas.getBoundingClientRect();
+    w = Math.max(320, rect.width);
+    h = Math.max(320, rect.height);
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    // Вершины: широкий треугольник, слегка смещённый вправо, чтобы текст
+    // первого экрана ложился на разрежённую часть, а не на плотную.
+    const cx = w * 0.62, cy = h * 0.52, r = Math.min(w, h) * 0.46;
+    const vertices = [0, 1, 2].map((i) => {
+      const a = -Math.PI / 2 + (i * 2 * Math.PI) / 3;
+      return [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
+    });
+
+    points = [];
+    let x = cx, y = cy;
+    const total = w < 700 ? 26000 : 60000;
+    for (let i = 0; i < total; i++) {
+      const [vx, vy] = vertices[(Math.random() * 3) | 0];
+      x = (x + vx) / 2;
+      y = (y + vy) / 2;
+      if (i > 20) points.push(x, y);       // первые точки ещё не легли на аттрактор
+    }
   }
+
+  function paint(phase) {
+    ctx.clearRect(0, 0, w, h);
+    // Синий с уходом в фиолетовый акцент сайта: холодный, «взгляд вперёд».
+    for (let i = 0; i < points.length; i += 2) {
+      const px = points[i], py = points[i + 1];
+      const t = (px / w + py / h) / 2;                 // положение задаёт оттенок
+      const glow = calm ? 0 : Math.sin(phase + t * 6) * 0.5 + 0.5;
+      const hue = 205 + t * 45;                        // 205° синий → 250° фиолетовый
+      const light = 52 + glow * 18;
+      const alpha = 0.10 + glow * 0.16;
+      ctx.fillStyle = `hsla(${hue}, 88%, ${light}%, ${alpha})`;
+      ctx.fillRect(px, py, 1.15, 1.15);
+    }
+  }
+
+  let raf = 0, last = 0, phase = 0;
+  function loop(now) {
+    // Двадцать кадров в секунду для фона незаметны глазу и втрое дешевле
+    // шестидесяти — на слабом телефоне это разница между «плавно» и «греется».
+    if (now - last > 50) {
+      last = now;
+      phase += 0.05;
+      paint(phase);
+    }
+    raf = requestAnimationFrame(loop);
+  }
+
+  function start() {
+    cancelAnimationFrame(raf);
+    build();
+    if (calm) { paint(0); return; }
+    raf = requestAnimationFrame(loop);
+  }
+
+  start();
+  window.addEventListener('resize', () => { clearTimeout(window.__frTimer); window.__frTimer = setTimeout(start, 250); });
+  // На скрытой вкладке фон не рисуем: телефон в кармане не должен работать зря.
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) cancelAnimationFrame(raf);
+    else if (!calm) raf = requestAnimationFrame(loop);
+  });
+})();
 </script>
-<noscript><div><img src="https://mc.yandex.ru/watch/00000000" style="position:absolute;left:-9999px" alt="" /></div></noscript>
+
+<noscript><div><img src="https://mc.yandex.ru/watch/111977007" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 
 </body>
 </html>
