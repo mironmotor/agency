@@ -649,6 +649,26 @@
   border: 1px solid rgba(255,255,255,.06); background: rgba(255,255,255,.02);
 }
 .founder-note p { margin: 0; font-size: 14px; opacity: .75; }
+
+/* Обещание под кнопками первого экрана. Вторая строка тише первой: сначала
+   читается выгода, потом — с кем именно будет разговор. */
+.hero-promise {
+  margin: 18px 0 0;
+  max-width: 520px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgba(255,255,255,.82);
+}
+.hero-promise span {
+  display: block;
+  margin-top: 4px;
+  font-size: 13.5px;
+  color: rgba(255,255,255,.55);
+}
+@media (max-width: 700px) {
+  .hero-promise { font-size: 14px; }
+  .hero-promise span { font-size: 12.5px; }
+}
 </style>
 </head>
 <body>
@@ -677,9 +697,14 @@
     <h1>Приводим<br>клиентов.<br><span class="accent">Строим</span><br>бренды.</h1>
     <p class="hero-desc">Таргет, SMM, продюсирование, разработка — всё в одних руках. Без посредников. Без воды.</p>
     <div class="hero-actions">
-      <a href="#quiz" class="btn btn-primary">Пройти квиз</a>
+      <a href="#quiz" class="btn btn-primary">Пройти тест</a>
       <a href="#cases" class="btn btn-ghost">Смотреть кейсы</a>
     </div>
+    <!-- Обещание рядом с кнопкой: человек должен видеть, ЧТО получит, до клика. -->
+    <p class="hero-promise">
+      Пройди тест и получи персональную стратегию маркетинга на 2027 год
+      <span>+ живой созвон с топовым маркетологом России&nbsp;— Мироном Бочаровым</span>
+    </p>
   </div>
 </section>
 
